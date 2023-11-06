@@ -4,6 +4,7 @@ import json_lib
 import notes
 
 from colorama import Fore
+from datetime import datetime
 
 main_list = notes.ListOfNotes()  # Список, который будет обновляться
 
@@ -29,7 +30,7 @@ def create_note():
     new_note = notes.Note(title, text)
     global main_list
     main_list.add_note(new_note)
-    print(Fore.GREEN + "\t\tЗаметка добавлена! ")
+    print(Fore.GREEN + "\n\t\tЗаметка добавлена! ")
 
 
 def find_note():
@@ -61,12 +62,28 @@ def edit_note():
 
 
 def remove_note():
-    return
+    main_list.remove_by_index(find_note())
+    print(Fore.GREEN + "\tЗаметка удалена!\n")
 
 
 def list_notes():
-    return
+    print(notes.ListOfNotes.to_string(main_list.notes))
 
 
 def filter_by_data():
-    return
+    try:
+        date = input(Fore.LIGHTCYAN_EX + "Введите дату начала фильтра в формате гг-мм-дд чч:мм:сс: ")
+        dt_begin = datetime.strptime(date, '%y-%m-%d %H:%M:%S')
+
+        date = input(Fore.LIGHTCYAN_EX + "Введите дату конца фильтра в формате гг-мм-дд чч:мм:сс: ")
+        dt_end = datetime.strptime(date, '%y-%m-%d %H:%M:%S')
+    except ValueError:
+        print(Fore.RED + "Дата введена неверно. ")
+        return
+
+    print(notes.ListOfNotes.to_string(main_list.get_by_date(dt_begin, dt_end)))
+
+
+def close():
+    json_lib.export_f()
+    exit(0)

@@ -1,7 +1,7 @@
 import datetime
 from typing import List
 import model
-
+from colorama import Fore
 
 class Note:
     note_id = 0
@@ -52,12 +52,22 @@ class ListOfNotes:
     def edit_by_id(self, note_id, title_, text_):
         self.notes[note_id].edit(title_, text_)
 
-    def to_string(self) -> str:  # Debug func
-        result = ""
-        result += "\n\tList of notes:\n\n"
+    @staticmethod
+    def to_string(notes, date_filter_text="") -> str:
+        if len(notes) == 0:
+            print(Fore.YELLOW + "\n\tСписок пуст! ", end="")
+            return ""
 
-        for note in self.notes:
-            result += (f"\t\tNote ID: {note.note_id}\n\t\tNote Title: {note.title}\n\t\tNote text: {note.text}\n\t\t"
-                       f"Note date: {note.note_dt}\n\n")
+        result = ""
+        result += Fore.GREEN + "\n\tСписок заметок" + Fore.CYAN + date_filter_text + Fore.GREEN + ":\n\n"
+
+        for note in notes:
+            result += (f"{Fore.LIGHTCYAN_EX}\t\tID заметки: {Fore.LIGHTBLUE_EX}{note.note_id}{Fore.LIGHTCYAN_EX}"
+                       f"\n\t\tНазвание: {Fore.LIGHTBLUE_EX}{note.title}{Fore.LIGHTCYAN_EX}\n\t\t"
+                       f"Текст: {Fore.LIGHTBLUE_EX}{note.text}\n\t\t"
+                       f"{Fore.LIGHTCYAN_EX}Дата создания(изменения): {Fore.LIGHTBLUE_EX}{str(note.note_dt).split(".")[0]}\n\n")
 
         return result
+
+    def remove_by_index(self, index):
+        self.notes.pop(index)

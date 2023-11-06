@@ -29,7 +29,7 @@ def menu():
         return
     except KeyboardInterrupt:
         print(Fore.RED + "\n\t\tВвод отменен.")
-        exit(0)
+        model.close()
 
     match choice:
         case 1:
@@ -44,7 +44,4 @@ def menu():
             model.filter_by_data()
         case 6:
             print(Fore.LIGHTMAGENTA_EX + "\n\t\tВыход...")
-            exit(0)
-
-    # TEMP!!!
-    print(model.main_list.to_string())
+            model.close()
