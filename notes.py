@@ -1,5 +1,5 @@
 import datetime
-
+from typing import List
 import model
 
 
@@ -15,17 +15,17 @@ class Note:
         self.text = text_
         self.note_dt = datetime.datetime.now()
 
-    def edit(self, title_="#%NOCHANGES#%", text_="#%NOCHANGES#%"):
-        if not title_ == "#%NOCHANGES#%" and text_ == "#%NOCHANGES#%":
-            if not title_ == "#%NOCHANGES#%":
+    def edit(self, title_="", text_=""):
+        if not (title_ == "" and text_ == ""):
+            if not title_ == "":
                 self.title = title_
-            if not text_ == "#%NOCHANGES#%":
+            if not text_ == "":
                 self.text = text_
             self.note_dt = datetime.datetime.now()
 
 
 class ListOfNotes:
-    notes = []
+    notes: List[Note] = []
 
     def add_note(self, note_: Note):
         self.notes.append(note_)
@@ -43,4 +43,21 @@ class ListOfNotes:
                 export.append(note)
         return export
 
-    
+    def size(self):
+        return len(self.notes)
+
+    def get_by_index(self, index) -> Note:
+        return self.notes[index]
+
+    def edit_by_id(self, note_id, title_, text_):
+        self.notes[note_id].edit(title_, text_)
+
+    def to_string(self) -> str:  # Debug func
+        result = ""
+        result += "\n\tList of notes:\n\n"
+
+        for note in self.notes:
+            result += (f"\t\tNote ID: {note.note_id}\n\t\tNote Title: {note.title}\n\t\tNote text: {note.text}\n\t\t"
+                       f"Note date: {note.note_dt}\n\n")
+
+        return result

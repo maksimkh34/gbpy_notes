@@ -45,3 +45,6 @@ def menu():
         case 6:
             print(Fore.LIGHTMAGENTA_EX + "\n\t\tВыход...")
             exit(0)
+
+    # TEMP!!!
+    print(model.main_list.to_string())
